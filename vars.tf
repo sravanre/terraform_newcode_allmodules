@@ -17,12 +17,12 @@ variable "vpc_cidr" {
 
 variable "subnet_cidr" {
   type    = list(any)
-  default = ["10.20.1.0/24", "10.20.3.0/24"]
+  default = ["10.20.1.0/24", "10.20.3.0/24", "10.20.5.0/24"]
 
 }
 
 variable "azs" {
   type    = list(any)
-  default = ["us-east-1a", "us-east-1b"]
+  default = ["us-east-1a", "us-east-1b", "us-east-1c"]
 
 }

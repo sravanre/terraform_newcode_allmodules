@@ -25,9 +25,16 @@ resource "aws_security_group" "webservers_sg" {
   vpc_id      = aws_vpc.my-vpc.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -48,7 +55,7 @@ resource "aws_subnet" "public" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
   tags = {
-    Name = "Subnet-${count.index + 1}"
+    Name = "Subnet-sravan-pub-${count.index + 1}"
   }
 }
 
@@ -82,6 +89,9 @@ resource "aws_instance" "ec2-1" {
   instance_type   = var.type
   security_groups = [aws_security_group.webservers_sg.id]
   subnet_id       = element(aws_subnet.public.*.id, count.index)
+  availability_zone = element(var.azs, count.index)
+  
+
   user_data = "${file("install.sh")}"
 
 
