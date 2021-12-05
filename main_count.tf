@@ -53,7 +53,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.my-vpc.id
   cidr_block              = element(var.subnet_cidr, count.index)
   availability_zone       = element(var.azs, count.index)
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = true      #"map_public_ip_on_launch - (Optional) Specify true to indicate that instances launched into the subnet should be assigned a public IP address. Default is false."
   tags = {
     Name = "Subnet-sravan-pub-${count.index + 1}"
   }
@@ -83,7 +83,7 @@ resource "aws_route_table_association" "route_table_association" {
 
 
 
-resource "aws_instance" "ec2-1" {
+resource "aws_instance" "webservers" {
   count           = length(var.subnet_cidr)
   ami             = var.ami_name
   instance_type   = var.type
