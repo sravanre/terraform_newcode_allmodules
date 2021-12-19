@@ -83,14 +83,14 @@ resource "aws_route_table_association" "route_table_association" {
 
 
 
-resource "aws_instance" "ec2-1" {
+resource "aws_instance" "web-1" {
   count           = length(var.subnet_cidr)
   ami             = var.ami_name
   instance_type   = var.type
   security_groups = [aws_security_group.webservers_sg.id]
   subnet_id       = element(aws_subnet.public.*.id, count.index)
   availability_zone = element(var.azs, count.index)
-  
+  key_name = "jenkins-key-22"
 
   user_data = "${file("install.sh")}"
 
@@ -103,3 +103,7 @@ resource "aws_instance" "ec2-1" {
 
 }
 
+
+output "public_server_IP" {
+  value = aws_instance.web-1.*.public_ip
+}
